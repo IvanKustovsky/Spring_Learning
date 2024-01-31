@@ -45,8 +45,6 @@ public class ContactController {
             // instead just display contact.html along with the errors if there are any available
         }
         contactService.saveMessageDetails(contact);
-        contactService.setCounter(contactService.getCounter() + 1);
-        log.info("Number of times the Contact form is submitted: " + contactService.getCounter());
         return "redirect:/contact"; // invokes the contact action again from the starting.
     }
 

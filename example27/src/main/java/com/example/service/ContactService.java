@@ -1,36 +1,19 @@
 package com.example.service;
 
+import com.example.constants.ContactConstants;
 import com.example.model.Contact;
+import com.example.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.ApplicationScope;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.context.annotation.SessionScope;
 
-/*
-@Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
-Logger static property in the class at compilation time.
-* */
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
-// @RequestScope
-/*Spring will create a new instance of the bean for each HTTP request.
-This means that each time a new request is made, a new instance of the bean will be created,
-and it will be available only for the duration of that specific request.*/
-
-// @SessionScope
-/*Spring will create and manage a single instance of the bean per HTTP session.
-The bean will be available as long as the user's session is active, persisting across multiple requests.
-This allows for maintaining stateful information specific to a user throughout their session.*/
-
-@ApplicationScope
-/*Spring will make sure there is only one Bean instance created and available for a single servlet context inside
-the web application.This means that the bean is shared among all users and sessions in the entire web application,
-providing a global and shared state.*/
-
 public class ContactService {
-
-    private int counter;
+    @Autowired
+    private ContactRepository contactRepository;
 
     public ContactService() {
         System.out.println("Contact Service Bean initialized");
@@ -38,21 +21,19 @@ public class ContactService {
 
     /**
      * Save Contact Details into DB
-     * @param contact
+     *
+     * @param contact is a model of details about message
      * @return boolean
      */
-    public boolean saveMessageDetails(Contact contact){
-        boolean isSaved = true;
-        //TODO - Need to persist data into the db table
-        log.info(contact.toString());
+    public boolean saveMessageDetails(Contact contact) {
+        boolean isSaved = false;
+        contact.setStatus(ContactConstants.OPEN);
+        contact.setCreatedBy(ContactConstants.ANONYMOUS);
+        contact.setCreatedAt(LocalDateTime.now());
+        int result = contactRepository.saveContactMsg(contact);
+        if(result > 0){
+            isSaved = true;
+        }
         return isSaved;
-    }
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
     }
 }
