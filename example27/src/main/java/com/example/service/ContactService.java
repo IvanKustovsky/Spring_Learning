@@ -42,4 +42,13 @@ public class ContactService {
         List<Contact> contactMessages = contactRepository.findMessagesWithStatus(ContactConstants.OPEN);
         return contactMessages;
     }
+
+    public boolean updateMessageStatus(int contactId, String updatedBy) {
+        boolean isUpdated = false;
+        int result = contactRepository.updateMessageStatus(contactId, ContactConstants.CLOSE, updatedBy);
+        if(result > 0){
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
 }
