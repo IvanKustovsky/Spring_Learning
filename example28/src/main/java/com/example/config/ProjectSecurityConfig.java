@@ -1,11 +1,9 @@
 package com.example.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -21,8 +19,7 @@ public class ProjectSecurityConfig {
             HttpSecurity http, HandlerMappingIntrospector handlerMappingIntrospector) throws Exception {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(handlerMappingIntrospector);
 
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/saveMsg"))
-                        .ignoringRequestMatchers(PathRequest.toH2Console()))
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/saveMsg")))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(mvcMatcherBuilder.pattern("/dashboard")).authenticated()
                         .requestMatchers(mvcMatcherBuilder.pattern("/displayMessages")).hasRole("ADMIN") // Added
@@ -36,16 +33,12 @@ public class ProjectSecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/about")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/assets/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/logout")).permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll())
+                        .requestMatchers(mvcMatcherBuilder.pattern("/logout")).permitAll())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
-
-        http.headers(headersConfigurer -> headersConfigurer
-                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
         return http.build();
 

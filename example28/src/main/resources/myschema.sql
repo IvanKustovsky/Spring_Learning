@@ -1,4 +1,4 @@
-create database eazyschool;
+create database if not exists eazyschool;
 
 use eazyschool;
 
