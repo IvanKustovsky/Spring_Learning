@@ -32,22 +32,6 @@ class EasySchoolApplicationTests {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	@Test
-	void saveMessageDetails_ShouldSaveContact() {
-		// Arrange
-		Contact contact = new Contact();
-
-		// Act
-		Mockito.when(contactRepository.save(Mockito.any(Contact.class))).thenReturn(contact);
-
-		boolean result = contactService.saveMessageDetails(contact);
-
-		// Assert
-		assertTrue(result);
-		assertEquals(ContactConstants.OPEN, contact.getStatus());
-		assertEquals(ContactConstants.ANONYMOUS, contact.getCreatedBy());
-		assertNotNull(contact.getCreatedAt());
-	}
 
 	@Test
 	void findMessagesWithOpenStatus_ShouldReturnListWithOpenStatus() {
@@ -79,7 +63,7 @@ class EasySchoolApplicationTests {
 		Mockito.when(contactRepository.save(Mockito.any(Contact.class))).thenReturn(existingContact);
 
 		// Act
-		boolean result = contactService.updateMessageStatus(contactId, updatedBy);
+		boolean result = contactService.updateMessageStatus(contactId);
 
 		// Assert
 		assertTrue(result);

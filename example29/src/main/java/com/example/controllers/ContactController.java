@@ -1,13 +1,10 @@
 package com.example.controllers;
 
-
-
 import com.example.model.Contact;
 import com.example.service.ContactService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 
 import java.util.List;
 
@@ -52,16 +48,16 @@ public class ContactController {
     }
 
     @RequestMapping("/displayMessages")
-    public ModelAndView displayMessages(Model model){
+    public ModelAndView displayMessages(){
         List<Contact> contactsMessages = contactService.findMessagesWithOpenStatus();
-        ModelAndView modelAndView = new ModelAndView("messages.html");
+        ModelAndView modelAndView = new ModelAndView("messages");
         modelAndView.addObject("contactMessages", contactsMessages);
         return modelAndView;
     }
 
     @RequestMapping(value = "/closeMsg", method = GET) // Could use @PostMapping without (method = POST)
-    public String closeMessage(@RequestParam int id, Authentication authentication) {
-        contactService.updateMessageStatus(id, authentication.getName());
+    public String closeMessage(@RequestParam int id) {
+        contactService.updateMessageStatus(id);
         return "redirect:/displayMessages";
     }
 
