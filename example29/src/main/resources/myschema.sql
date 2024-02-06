@@ -27,3 +27,44 @@ CREATE TABLE IF NOT EXISTS `holidays`
     `updated_at` TIMESTAMP   DEFAULT NULL,
     `updated_by` varchar(50) DEFAULT NULL
 );
+
+CREATE TABLE IF NOT EXISTS `roles`
+(
+    `role_id`    int auto_increment primary key,
+    `role_name`  varchar(100) NOT NULL,
+    `created_at` TIMESTAMP    NOT NULL,
+    `created_by` varchar(50)  NOT NULL,
+    `updated_at` TIMESTAMP   DEFAULT NULL,
+    `updated_by` varchar(50) DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `address`
+(
+    `address_id` int auto_increment primary key,
+    `address1`   varchar(200) NOT NULL,
+    `address2`   varchar(200) DEFAULT NULL,
+    `city`       varchar(50)  NOT NULL,
+    `state`      varchar(50)  NOT NULL,
+    `zip_code`   int          NOT NULL,
+    `created_at` TIMESTAMP    NOT NULL,
+    `created_by` varchar(50)  NOT NULL,
+    `updated_at` TIMESTAMP    DEFAULT NULL,
+    `updated_by` varchar(50)  DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `person`
+(
+    `person_id`  int auto_increment primary key,
+    `name`       varchar(100) NOT NULL,
+    `mobile_number`  varchar(100) NOT NULL,
+    `email`      varchar(100) NOT NULL,
+    `password`   varchar(200) NOT NULL,
+    `role_id`    int          NOT NULL,
+    `address_id` int NULL,
+    `created_at` TIMESTAMP    NOT NULL,
+    `created_by` varchar(50)  NOT NULL,
+    `updated_at` TIMESTAMP   DEFAULT NULL,
+    `updated_by` varchar(50) DEFAULT NULL,
+    foreign key (role_id) references roles (role_id),
+    foreign key (address_id) references address (address_id)
+);

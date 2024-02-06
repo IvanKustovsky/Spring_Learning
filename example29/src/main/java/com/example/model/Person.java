@@ -51,6 +51,7 @@ public class Person extends BaseEntity {
     @NotBlank(message = "Password must be not blank")
     @Size(min = 5, message = "Password must be at least 5 symbols long")
     @PasswordValidator // Custom password validation annotation
+    @Column(name = "password")
     private String pwd;
 
     @NotBlank(message = "Confirm Password must be not blank")
@@ -58,4 +59,12 @@ public class Person extends BaseEntity {
     @Transient  // Tells to Spring Data JPA to ignore this field for all type of Spring Data JPA related operations.
     // Like INSERT, UPDATE, DELETE, SELECT
     private String confirmPwd;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Role.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+    private Role role;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Address.class)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
+    private Address address;
 }
