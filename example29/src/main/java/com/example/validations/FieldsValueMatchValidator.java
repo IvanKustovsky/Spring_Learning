@@ -9,6 +9,7 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
 
     private String field;
     private String fieldMatch;
+
     @Override
     public void initialize(FieldsValueMatch constraintAnnotation) {
         this.field = constraintAnnotation.field();
@@ -21,14 +22,8 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
                 getPropertyValue(field);
         Object fieldMatchValue = new BeanWrapperImpl(value).
                 getPropertyValue(fieldMatch);
-        if(fieldValue != null){
-            if(fieldValue.toString().startsWith("$2a")){ // "$2a" indicates that this is hash value, so we don't need to
-                // compare this field with confirmPwd field. This validation happens again after successful registration,
-                // because of JPA tries to store record into DB.
-                return true;
-            } else {
-                return fieldValue.equals(fieldMatchValue);
-            }
+        if (fieldValue != null) {
+            return fieldValue.equals(fieldMatchValue);
         } else {
             return fieldMatchValue == null;
         }
