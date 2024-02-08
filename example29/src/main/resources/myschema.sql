@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `person`
 (
     `person_id`  int auto_increment primary key,
     `name`       varchar(100) NOT NULL,
-    `mobile_number`  varchar(100) NOT NULL,
+    `mobile_number`  varchar(10) NOT NULL,
     `email`      varchar(100) NOT NULL,
     `password`   varchar(200) NOT NULL,
     `role_id`    int          NOT NULL,
