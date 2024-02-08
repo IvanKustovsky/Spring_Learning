@@ -29,4 +29,4 @@ INSERT INTO `roles` (`role_name`,`created_at`, `created_by`)
 VALUES ('STUDENT',CURDATE(),'DBA');
 
 INSERT INTO `person` (`name`, `email`, `mobile_number`, `password`, `role_id`, `created_at`, `created_by`)
-    VALUES ('Admin', 'admin@gmail.com', '9999900000', 'admin', 1, CURDATE(), 'DBA');
+    VALUES ('Admin', 'admin@gmail.com', '9999900000', '$2a$12$vxwoZ4veeH3RqAQjMP9ekeC2J78NmLXUopDOLRAH8VG3DY6rY3TBi', 1, CURDATE(), 'DBA');

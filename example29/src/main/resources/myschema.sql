@@ -68,3 +68,5 @@ CREATE TABLE IF NOT EXISTS `person`
     foreign key (role_id) references roles (role_id),
     foreign key (address_id) references address (address_id)
 );
+
+

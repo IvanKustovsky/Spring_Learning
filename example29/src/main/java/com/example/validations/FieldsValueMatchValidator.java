@@ -22,7 +22,13 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
         Object fieldMatchValue = new BeanWrapperImpl(value).
                 getPropertyValue(fieldMatch);
         if(fieldValue != null){
-            return fieldValue.equals(fieldMatchValue);
+            if(fieldValue.toString().startsWith("$2a")){ // "$2a" indicates that this is hash value, so we don't need to
+                // compare this field with confirmPwd field. This validation happens again after successful registration,
+                // because of JPA tries to store record into DB.
+                return true;
+            } else {
+                return fieldValue.equals(fieldMatchValue);
+            }
         } else {
             return fieldMatchValue == null;
         }
