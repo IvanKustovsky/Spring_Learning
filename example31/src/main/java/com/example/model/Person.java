@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -70,7 +73,15 @@ public class Person extends BaseEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id", referencedColumnName = "classId")
     private EazyClass eazyClass;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "person_courses",
+            joinColumns = {
+            @JoinColumn(name = "person_id", referencedColumnName = "personId")},
+            inverseJoinColumns = {
+            @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
+    private Set<Course> courses = new HashSet<>();
 }
