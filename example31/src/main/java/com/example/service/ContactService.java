@@ -43,7 +43,7 @@ public class ContactService {
         int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sortDir.equals("asc") ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-        Page<Contact> msgPage = contactRepository.findByStatus(ContactConstants.OPEN, pageable);
+        Page<Contact> msgPage = contactRepository.findOpenMessages(ContactConstants.OPEN, pageable);
         return msgPage;
     }
 
@@ -51,10 +51,8 @@ public class ContactService {
 
     public boolean updateMessageStatus(int contactId) {
         boolean isUpdated = false;
-        Optional<Contact> contact = contactRepository.findById(contactId);
-        contact.ifPresent(contact1 -> contact1.setStatus(ContactConstants.CLOSE));
-        Contact updatedContact = contactRepository.save(contact.get());
-        if(updatedContact.getUpdatedBy() != null){
+        int rows = contactRepository.updateMessageStatus(ContactConstants.CLOSE, contactId);
+        if(rows > 0) {
             isUpdated = true;
         }
         return isUpdated;
