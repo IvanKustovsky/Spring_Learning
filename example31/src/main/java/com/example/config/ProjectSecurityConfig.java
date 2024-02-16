@@ -22,7 +22,7 @@ public class ProjectSecurityConfig {
                         .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**")))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(mvcMatcherBuilder.pattern("/dashboard")).authenticated()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/displayMessages")).hasRole("ADMIN") // Added
+                        .requestMatchers(mvcMatcherBuilder.pattern("/displayMessages/**")).hasRole("ADMIN")
                         .requestMatchers(mvcMatcherBuilder.pattern("/closeMsg/**")).hasRole("ADMIN")
                         .requestMatchers(mvcMatcherBuilder.pattern("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(mvcMatcherBuilder.pattern("/student/**")).hasRole("STUDENT")

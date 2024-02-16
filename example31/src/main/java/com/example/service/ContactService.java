@@ -5,6 +5,10 @@ import com.example.model.Contact;
 import com.example.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -33,8 +37,17 @@ public class ContactService {
     }
 
     public List<Contact> findMessagesWithOpenStatus() {
-        return contactRepository.findContactByStatus(ContactConstants.OPEN);
+        return contactRepository.findByStatus(ContactConstants.OPEN);
     }
+    public Page<Contact> findMessagesWithOpenStatus(int pageNum, String sortField, String sortDir) {
+        int pageSize = 5;
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sortDir.equals("asc") ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+        Page<Contact> msgPage = contactRepository.findByStatus(ContactConstants.OPEN, pageable);
+        return msgPage;
+    }
+
+
 
     public boolean updateMessageStatus(int contactId) {
         boolean isUpdated = false;

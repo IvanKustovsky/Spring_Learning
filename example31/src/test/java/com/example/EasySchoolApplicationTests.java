@@ -36,7 +36,7 @@ class EasySchoolApplicationTests {
 	@Test
 	void findMessagesWithOpenStatus_ShouldReturnListWithOpenStatus() {
 		// Arrange
-		Mockito.when(contactRepository.findContactByStatus(ContactConstants.OPEN))
+		Mockito.when(contactRepository.findByStatus(ContactConstants.OPEN))
 				.thenReturn(Arrays.asList(new Contact(), new Contact()));
 
 		// Act

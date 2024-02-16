@@ -8,8 +8,9 @@ import com.example.repository.CourseRepository;
 import com.example.repository.EazyClassRepository;
 import com.example.repository.PersonRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,18 +19,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("admin")
 public class AdminController {
 
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private EazyClassRepository eazyClassRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
+    private final PersonRepository personRepository;
+    private final EazyClassRepository eazyClassRepository;
+    private final CourseRepository courseRepository;
 
     @RequestMapping(value = "/displayClasses")
     public ModelAndView displayClassesPage() {
@@ -109,7 +106,8 @@ public class AdminController {
 
     @GetMapping(value = "/displayCourses")
     public ModelAndView displayCoursesPage() {
-        List<Course> courses = courseRepository.findAll();
+        //List<Course> courses = courseRepository.findAllByOrderByName();
+        List<Course> courses = courseRepository.findAll(Sort.by("name").ascending());
         ModelAndView modelAndView = new ModelAndView("courses_secure");
         modelAndView.addObject("course", new Course());
         modelAndView.addObject("courses", courses);
