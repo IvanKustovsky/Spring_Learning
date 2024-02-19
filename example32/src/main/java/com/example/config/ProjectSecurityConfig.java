@@ -19,7 +19,8 @@ public class ProjectSecurityConfig {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(handlerMappingIntrospector);
 
         http.csrf((csrf) -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/saveMsg"))
-                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**")))
+                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**"))
+                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/**")))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(mvcMatcherBuilder.pattern("/dashboard")).authenticated()
                         .requestMatchers(mvcMatcherBuilder.pattern("/displayMessages/**")).hasRole("ADMIN")
@@ -38,7 +39,8 @@ public class ProjectSecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/assets/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/logout")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/public/**")).permitAll())
+                        .requestMatchers(mvcMatcherBuilder.pattern("/public/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/**")).authenticated())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
