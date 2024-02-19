@@ -8,10 +8,7 @@ import com.example.repository.ContactRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +21,7 @@ import java.util.Optional;
 // @CrossOrigin annotation allows the cross communication between the multiple servers by disabling the CORS protection.
 @CrossOrigin(origins = "*") // * - accepts the traffic from all kind of origins regardless of their host name and port number.
 // Is NOT recommended to use * in Production
-@RequestMapping(path = "/api/contact")
+@RequestMapping(path = "/api/contact", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class ContactRestController {
 
     private final ContactRepository contactRepository;
@@ -98,8 +95,6 @@ public class ContactRestController {
         return ResponseEntity.
                 status(HttpStatus.BAD_REQUEST)
                 .body(response);
-
-
     }
 
 }
