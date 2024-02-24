@@ -2,6 +2,7 @@ package com.example.model;
 
 import com.example.annotation.FieldsValueMatch;
 import com.example.annotation.PasswordValidator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -51,18 +52,21 @@ public class Person extends BaseEntity {
     @Email(message = "Please provide a confirm valid email address")
     @Transient  // Tells to Spring Data JPA to ignore this field for all type of Spring Data JPA related operations.
     // Like INSERT, UPDATE, DELETE, SELECT
+    @JsonIgnore
     private String confirmEmail;
 
     @NotBlank(message = "Password must be not blank")
     @Size(min = 5, message = "Password must be at least 5 symbols long")
     @PasswordValidator // Custom password validation annotation
     @Column(name = "password")
+    @JsonIgnore
     private String pwd;
 
     @NotBlank(message = "Confirm Password must be not blank")
     @Size(min = 5, message = "Confirm Password must be at least 5 symbols long")
     @Transient  // Tells to Spring Data JPA to ignore this field for all type of Spring Data JPA related operations.
     // Like INSERT, UPDATE, DELETE, SELECT
+    @JsonIgnore
     private String confirmPwd;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Role.class)

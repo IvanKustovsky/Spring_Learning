@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
-@Controller
+@Controller("profileControllerBean") // added to avoid ambiguity between data REST(it creates automatically 'profileController'
 public class ProfileController {
     @Autowired
     private PersonRepository personRepository;

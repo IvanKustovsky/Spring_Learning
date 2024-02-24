@@ -25,7 +25,7 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
     List<Contact> findByStatus(String status);
 
     @Query("SELECT c FROM Contact c WHERE c.status = :status")  // JPQL(Java Persistence Query Language) query
-    Page<Contact> findByStatus(@Param("status") String status, Pageable pageable);
+    Page<Contact> findByStatusWithQuery(@Param("status") String status, Pageable pageable);
 
     @Transactional  // Creating a transaction while trying to update
     @Modifying // claims that data inside database will be modified(inserted, updated or deleted)
