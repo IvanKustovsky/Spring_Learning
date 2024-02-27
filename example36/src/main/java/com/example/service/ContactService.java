@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.config.CustomProps;
 import com.example.constants.ContactConstants;
 import com.example.model.Contact;
 import com.example.repository.ContactRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +21,8 @@ import java.util.Optional;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+
+    private final CustomProps customProps;
     /**
      * Save Contact Details into DB
      * @param contact is a model of details about message
@@ -40,7 +42,10 @@ public class ContactService {
         return contactRepository.findByStatus(ContactConstants.OPEN);
     }
     public Page<Contact> findMessagesWithOpenStatus(int pageNum, String sortField, String sortDir) {
-        int pageSize = 5;
+        int pageSize = customProps.getPageSize();
+        if(null != customProps.getContact() && null != customProps.getContact().get("pageSize")){
+            pageSize = Integer.parseInt(customProps.getContact().get("pageSize").trim());
+        }
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sortDir.equals("asc") ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending());
         Page<Contact> msgPage = contactRepository.findByStatusWithQuery(ContactConstants.OPEN, pageable);
